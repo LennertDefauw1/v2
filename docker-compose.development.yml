@@ -1,0 +1,33 @@
+version: '3'
+services:
+    adminer:
+        image: adminer
+        container_name: developmentelopment-adminer
+        restart: always
+        ports:
+            - 8080:8080
+        networks:
+            - project-development-network
+
+    project-development-db:
+        image: mariadb:latest
+        container_name: project-development-db
+        restart: always
+        environment:
+            - MARIADB_ROOT_PASSWORD=jimber
+            - MARIADB_DATABASE=development-db
+            - DATABASE_HOST=project-development-db
+            - DATABASE_PORT=3306
+        volumes:
+            - db_data_development:/var/lib/mysql
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            timeout: 10s
+            retries: 10
+        networks:
+            - project-development-network
+
+volumes:
+    db_data_development:
+networks:
+    project-development-network:
