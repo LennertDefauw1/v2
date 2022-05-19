@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-white md:block flex justify-center items-center">
         <img
-            class="absolute left-2 top-2 w-40 h-40 md:filter-whiteout"
+            class="absolute left-2 top-2 w-20 h-20 lg:w-40 lg:h-40 md:filter-whiteout"
             src="https://threefold.io/assets/static/tft_color_logo.3e8a41b.7b655c36cc78de99d8ef9da582b8cc8c.svg"
             alt=""
         />

@@ -38,7 +38,7 @@
     import MainLayout from '@/layouts/MainLayout.vue';
     import { onBeforeUnmount, ref } from 'vue';
     import ExpiredAttempt from '@/modules/Login/components/ExpiredAttempt.vue';
-    import { loginUser } from '@/modules/Login/services/login.service';
+    import { loginUserWeb } from '@/modules/Login/services/login.service';
     import { selectedImageId } from '@/modules/Initial/data';
     import { generateRandomImageId } from '@/modules/Login/utils/generate.util';
     const timeoutSeconds = 120;
@@ -67,6 +67,6 @@
         secondsTillTimeout.value = timeoutSeconds;
 
         selectedImageId.value = generateRandomImageId();
-        await loginUser();
+        await loginUserWeb();
     };
 </script>

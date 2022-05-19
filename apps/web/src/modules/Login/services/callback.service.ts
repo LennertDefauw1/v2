@@ -4,6 +4,7 @@ import { SocketLoginResult, SocketSignedAttempt } from '@/modules/Core/interface
 import { selectedImageId } from '@/modules/Initial/data';
 import { redirectToOriginalLocation, redirectWithCancel } from '@/modules/Login/services/redirection.service';
 import { encodeBase64 } from 'tweetnacl-util';
+import { isMobile } from '@/utils/misc';
 
 export const socketCallbackLogin = async (data: SocketLoginResult) => {
     if (!data.doubleName || !data.signedAttempt) return;
@@ -20,7 +21,8 @@ export const socketCallbackLogin = async (data: SocketLoginResult) => {
 
     const signedAttempt = JSON.parse(new TextDecoder().decode(valid)) as SocketSignedAttempt;
 
-    if (signedAttempt.selectedImageId !== selectedImageId.value) {
+    if (signedAttempt.selectedImageId !== selectedImageId.value && !isMobile()) {
+        console.error('[CALLBACK]: selectedImageId mismatch');
         return;
     }
 

@@ -20,8 +20,14 @@ const initApplication = async () => {
     const app = createApp(App);
     app.use(socketIo, {
         connection: Config.API_BACKEND_URL,
-        options: { allowEIO3: true },
-        transports: ['websocket'],
+        options: {
+            allowEI03: true,
+            reconnection: true,
+            reconnectionDelay: 500,
+            reconnectionAttempts: 10,
+        },
+        reconnection: true,
+        transports: ['websocket', 'polling'],
     });
 
     const router = createVueRouter();

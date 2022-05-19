@@ -22,6 +22,10 @@ export const initializeSockets = () => {
         console.log('[SOCKET:RECEIVE]: CONNECTED');
     });
 
+    state.socket.on(SocketListenType.DISCONNECT, () => {
+        console.log('[SOCKET:RECEIVE]: DISCONNECTED');
+    });
+
     state.socket.on(SocketListenType.NAME_KNOWN, () => {
         console.log('[SOCKET:RECEIVE]: NAME KNOWN');
         userKnown.value = true;
@@ -49,6 +53,7 @@ export const emitCheckName = (name: SocketCheckName) => {
 };
 
 export const emitJoin = (room: SocketJoin) => {
+    state.socket.connect();
     console.log('[SOCKET:SEND]: JOIN ROOM');
     state.socket.emit(SocketEmitType.JOIN, room);
 };
