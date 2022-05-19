@@ -13,3 +13,10 @@ body,
 *::selection {
     @apply bg-primary-600/30;
 }
+
+
+@layer utilities {
+    .filter-whiteout {
+        filter: grayscale(1) contrast(0) brightness(100);
+    }
+}

@@ -11,6 +11,8 @@ module.exports = {
             colors: {
                 primary: colors.blue,
                 secondary: colors.gray,
+                threefoldPink: '#7E0A89',
+                threefoldBlue: '#047967',
             },
             screens: {
                 landscape: {

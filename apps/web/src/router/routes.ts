@@ -1,29 +1,10 @@
-import { RouteRecordRaw } from 'vue-router';
-import Home from '@/views/Home.vue';
-import Login from '@/views/Login.vue';
-import PathNotFound from '@/views/PathNotFound.vue';
+import { _RouteRecordBase, RouteComponent, RouteLocationNormalized } from 'vue-router';
 
-export const routes: RouteRecordRaw[] = [
-    {
-        path: '/',
-        name: 'home',
-        component: Home,
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: Login,
-    },
-    {
-        path: '/404',
-        name: '404',
-        component: PathNotFound,
-        // Allows props to be passed to the 404 page through route
-        // params, such as `resource` to define what wasn't found.
-        props: true,
-    },
-    {
-        path: '/:pathMatch(.*)',
-        redirect: '404',
-    },
-];
+export interface Route extends _RouteRecordBase {
+    component?: RouteComponent | (() => Promise<RouteComponent>);
+    props?: boolean | Record<string, any> | ((to: RouteLocationNormalized) => Record<string, any>);
+    meta?: {
+        activeNav?: string;
+        [key: string]: any;
+    };
+}

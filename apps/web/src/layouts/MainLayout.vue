@@ -1,34 +1,23 @@
 <template>
-    <div class="min-h-screen bg-white">
-        <div class="wrapper">
-          <div class="hidden md:block h-screen artwork">
-          </div>
-          <div class="w-3/5 mx-auto">
-            <div class="flex items-center h-full">
-              <div class="flex flex-col">
-                <div class="font-medium pt-4 text-xl">Threefold Connect Authenticator</div>
-                <slot name="content"></slot>
-              </div>
+    <div class="min-h-screen bg-white md:block flex justify-center items-center">
+        <img
+            class="absolute left-2 top-2 w-40 h-40 md:filter-whiteout"
+            src="https://threefold.io/assets/static/tft_color_logo.3e8a41b.7b655c36cc78de99d8ef9da582b8cc8c.svg"
+            alt=""
+        />
+        <div class="grid md:grid-cols-2">
+            <div class="hidden md:block h-screen">
+                <img src="/side.jpg" alt="" class="h-full w-full object-cover object-center" />
             </div>
-
-<!--            <slot name="content"/>-->
-          </div>
+            <div class="md:w-3/5 mx-auto px-8 md:px-0">
+                <div class="flex items-center h-full">
+                    <div class="flex flex-col">
+                        <slot name="content"></slot>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup></script>
-
-<style scoped>
-.wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.artwork{
-  background-image: url("/side.png");
-  background-repeat: no-repeat;
-  background-size:cover;
-  background-position: center;
-}
-</style>
