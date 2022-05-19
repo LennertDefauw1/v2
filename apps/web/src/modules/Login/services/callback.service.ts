@@ -2,7 +2,7 @@ import { getPublicKeyOfUsername } from '@/modules/Login/services/external.servic
 import { validateSignedAttempt } from '@/modules/Core/services/crypto.service';
 import { SocketLoginResult, SocketSignedAttempt } from '@/modules/Core/interfaces/socket.interface';
 import { selectedImageId } from '@/modules/Initial/data';
-import { redirectToOriginalLocation } from '@/modules/Login/services/redirection.service';
+import { redirectToOriginalLocation, redirectWithCancel } from '@/modules/Login/services/redirection.service';
 import { encodeBase64 } from 'tweetnacl-util';
 
 export const socketCallbackLogin = async (data: SocketLoginResult) => {
@@ -25,4 +25,8 @@ export const socketCallbackLogin = async (data: SocketLoginResult) => {
     }
 
     redirectToOriginalLocation(data);
+};
+
+export const socketCallbackCancel = () => {
+    redirectWithCancel();
 };

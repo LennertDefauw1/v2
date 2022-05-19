@@ -9,6 +9,7 @@ import { registerModules } from '@/router/registerRouters';
 
 import InitModule from '@/modules/Initial';
 import LoginModule from '@/modules/Login';
+import CoreModule from '@/modules/Core';
 import sodium from 'libsodium-wrappers';
 import socketIo from '@/plugins/SocketIo';
 import { Config } from '@/modules/Core/configs';
@@ -24,7 +25,7 @@ const initApplication = async () => {
     });
 
     const router = createVueRouter();
-    await registerModules(router, [InitModule, LoginModule]);
+    await registerModules(router, [CoreModule, InitModule, LoginModule]);
     app.use(router);
 
     registerGlobalComponent(app);

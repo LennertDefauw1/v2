@@ -1,9 +1,8 @@
 import { QueryOptions } from '@/modules/Initial/services/query.service';
-import { useRoute } from 'vue-router';
+import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { appId, appPublicKey, redirectUrl, scope, state, username } from '@/modules/Initial/data';
 
-export const setLocalStorageData = () => {
-    const route = useRoute();
+export const setLocalStorageData = (route: RouteLocationNormalizedLoaded) => {
     const queryParams: QueryOptions = route.query as QueryOptions;
 
     username.value = queryParams.username;

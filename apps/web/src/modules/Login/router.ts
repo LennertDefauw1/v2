@@ -6,7 +6,6 @@ export const loginRoutes = [
         name: 'login',
         path: '/login',
         component: Login,
-        props: true,
     },
 ];
 

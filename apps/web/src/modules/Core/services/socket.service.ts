@@ -9,7 +9,7 @@ import {
 } from '@/modules/Core/interfaces/socket.interface';
 import { SocketEmitType, SocketListenType } from '@/modules/Core/types/socket.type';
 import { userKnown } from '@/modules/Initial/data';
-import { socketCallbackLogin } from '@/modules/Login/services/callback.service';
+import { socketCallbackCancel, socketCallbackLogin } from '@/modules/Login/services/callback.service';
 
 const state = reactive<State>({
     socket: '',
@@ -34,6 +34,7 @@ export const initializeSockets = () => {
 
     state.socket.on(SocketListenType.LOGIN_CANCEL, () => {
         console.log('[SOCKET:RECEIVE]: LOGIN CANCEL');
+        socketCallbackCancel();
     });
 
     state.socket.on(SocketListenType.LOGIN_CALLBACK, async (data: SocketLoginResult) => {

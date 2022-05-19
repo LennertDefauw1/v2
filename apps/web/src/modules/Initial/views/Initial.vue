@@ -70,10 +70,9 @@
 
 <script lang="ts" setup>
     import MainLayout from '@/layouts/MainLayout.vue';
-    import { onBeforeMount, ref, watch } from 'vue';
+    import { onBeforeMount, ref } from 'vue';
     import { validateName } from '@/utils/name.validate';
     import { isMobile } from '@/utils/misc';
-    import { setLocalStorageData } from '@/modules/Core/services/storage.service';
     import { emitCheckName } from '@/modules/Core/services/socket.service';
     import { SocketCheckName } from '@/modules/Core/interfaces/socket.interface';
     import { useDebounceFn } from '@vueuse/core';
@@ -92,7 +91,6 @@
         setTimeout(() => {
             checkName();
         }, 1000);
-        setLocalStorageData();
     });
 
     const debounceCheckName = useDebounceFn(() => {

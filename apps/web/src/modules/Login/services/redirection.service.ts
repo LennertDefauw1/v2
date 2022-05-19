@@ -22,6 +22,13 @@ export const redirectToOriginalLocation = (signedAttempt: SocketLoginResult) => 
     console.log('[REDIRECTING] - REDIRECTED');
 };
 
+export const redirectWithCancel = () => {
+    if (!redirectUrl.value) return;
+
+    const safeRedirectUrl = redirectUrl.value[0] === '/' ? redirectUrl.value : '/' + redirectUrl.value;
+    window.location.href = `//${appId.value}${safeRedirectUrl}?error=CancelledByUser`;
+};
+
 export const createSafetyUrl = (): string => {
     if (!redirectUrl.value) return '';
 
