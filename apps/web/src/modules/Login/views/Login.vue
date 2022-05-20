@@ -1,29 +1,32 @@
 <template>
     <MainLayout v-if="!isMobile()">
         <template #content>
-            <div v-if="secondsTillTimeout <= 0" class="prose prose-blue">
-                <ExpiredAttempt></ExpiredAttempt>
-            </div>
-            <div v-else class="prose prose-blue">
-                <p class="pt-4">
-                    Please open the ThreeFold Connect app on your mobile device, authenticate either with pin or Touch
-                    ID, and then match the following icon from the choices given.
-                </p>
-                <p class="pt-4">
-                    <EmojiPicker :key="selectedImageId"></EmojiPicker>
-                </p>
-                <p>Please enter your pin or use fingerprint and select this icon on your mobile phone.</p>
-                <p class="text-sm font-semibold">
-                    Your login attempt is valid for another {{ secondsTillTimeout }} seconds.
-                </p>
-                <div>
-                    <button
-                        type="button"
-                        class="bg-threefoldPink w-full text-center items-center px-3 py-3 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        @click="resendNotification"
-                    >
-                        Resend notification
-                    </button>
+            <div class="prose prose-blue">
+                <h1>Threefold Connect Authenticator</h1>
+                <div v-if="secondsTillTimeout <= 0">
+                    <ExpiredAttempt></ExpiredAttempt>
+                </div>
+                <div v-else>
+                    <p>
+                        Please open the ThreeFold Connect app on your mobile device, authenticate either with pin or
+                        Touch ID, and then match the following icon from the choices given.
+                    </p>
+                    <p class="pt-4">
+                        <EmojiPicker :key="selectedImageId"></EmojiPicker>
+                    </p>
+                    <p>Please enter your pin or use fingerprint and select this icon on your mobile phone.</p>
+                    <p class="text-sm font-semibold">
+                        Your login attempt is valid for another {{ secondsTillTimeout }} seconds.
+                    </p>
+                    <div>
+                        <button
+                            type="button"
+                            class="bg-threefoldPink w-full text-center items-center px-3 py-3 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            @click="resendNotification"
+                        >
+                            Resend notification
+                        </button>
+                    </div>
                 </div>
             </div>
         </template>

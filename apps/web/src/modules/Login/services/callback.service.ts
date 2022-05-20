@@ -21,6 +21,7 @@ export const socketCallbackLogin = async (data: SocketLoginResult) => {
 
     const signedAttempt = JSON.parse(new TextDecoder().decode(valid)) as SocketSignedAttempt;
 
+    // When using unilinks, no emoji is selected so only check if it is not mobile
     if (signedAttempt.selectedImageId !== selectedImageId.value && !isMobile()) {
         console.error('[CALLBACK]: selectedImageId mismatch');
         return;
