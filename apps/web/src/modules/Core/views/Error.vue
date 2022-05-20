@@ -4,7 +4,7 @@
             <div class="prose">
                 <h1>Error</h1>
                 <p>
-                    We didn't get the required parameters to make this work. You need to comme from a third party app to
+                    We didn't get the required parameters to make this work. You need to come from a third party app to
                     use this.
                 </p>
 

@@ -20,6 +20,5 @@ export const isValidLoginUrl = (route: RouteLocationNormalizedLoaded): boolean =
 
 export const isValidVerificationUrl = (route: RouteLocationNormalizedLoaded): boolean => {
     const q = route.query;
-
-    return !(!q.userId || !q.verficationCode);
+    return !(!q.userId || !q.verificationCode);
 };
