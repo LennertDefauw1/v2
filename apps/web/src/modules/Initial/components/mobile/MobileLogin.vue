@@ -12,9 +12,6 @@
 
 <script lang="ts" setup>
     import { loginUserMobile } from '@/modules/Login/services/login.service';
-    import { inject } from 'vue';
-
-    const socket = inject('socket') as any;
 
     const loginMobile = () => {
         loginUserMobile();
