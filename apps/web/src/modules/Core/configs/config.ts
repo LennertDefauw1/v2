@@ -3,6 +3,7 @@ export type Configuration = {
     API_BACKEND_URL: string;
     API_KYC_URL: string;
     SUPPORT_URL: string;
+    PAGE_TITLE: string;
 };
 
 export const Config: Configuration = {
@@ -10,4 +11,5 @@ export const Config: Configuration = {
     API_BACKEND_URL: 'http://192.168.68.115:5000/',
     API_KYC_URL: 'http://192.168.68.115:5005/',
     SUPPORT_URL: 'https://support.grid.tf/',
+    PAGE_TITLE: 'ThreeFold Connect Authenticator',
 };
