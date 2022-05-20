@@ -10,9 +10,12 @@ import { registerModules } from '@/router/registerRouters';
 import InitModule from '@/modules/Initial';
 import LoginModule from '@/modules/Login';
 import CoreModule from '@/modules/Core';
+import MailModule from '@/modules/Mail';
+import PhoneModule from '@/modules/Phone';
+import SignModule from '@/modules/Sign';
 import sodium from 'libsodium-wrappers';
 import socketIo from '@/plugins/SocketIo';
-import { Config } from '@/modules/Core/configs';
+import { Config } from '@/modules/Core/configs/config';
 
 const initApplication = async () => {
     await sodium.ready;
@@ -31,7 +34,7 @@ const initApplication = async () => {
     });
 
     const router = createVueRouter();
-    await registerModules(router, [CoreModule, InitModule, LoginModule]);
+    await registerModules(router, [CoreModule, InitModule, LoginModule, MailModule, PhoneModule, SignModule]);
     app.use(router);
 
     registerGlobalComponent(app);

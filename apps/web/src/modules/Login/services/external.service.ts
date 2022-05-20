@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { decodeBase64 } from 'tweetnacl-util';
-import { Config } from '@/modules/Core/configs';
+import { Config } from '@/modules/Core/configs/config';
 
 export const getPublicKeyOfUsername = async (username: string): Promise<Uint8Array> => {
     try {

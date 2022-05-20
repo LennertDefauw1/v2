@@ -1,5 +1,5 @@
 <template>
-    <MainLayout v-if="!isMobile()">
+    <MainLayout>
         <template #content>
             <div class="prose prose-blue">
                 <h1>Threefold Connect Authenticator</h1>
@@ -31,7 +31,6 @@
             </div>
         </template>
     </MainLayout>
-    <div v-else>Mobile Layout WIP</div>
 </template>
 
 <script lang="ts" setup>

@@ -49,7 +49,7 @@
 <script lang="ts" setup>
     import { onBeforeMount, ref } from 'vue';
     import { useDebounceFn } from '@vueuse/core';
-    import { Config } from '@/modules/Core/configs';
+    import { Config } from '@/modules/Core/configs/config';
     import { SocketCheckName } from '@/modules/Core/interfaces/socket.interface';
     import { selectedImageId, userKnown, username } from '@/modules/Initial/data';
     import { emitCheckName } from '@/modules/Core/services/socket.service';
