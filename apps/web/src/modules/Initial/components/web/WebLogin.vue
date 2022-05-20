@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { onBeforeMount, ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useDebounceFn } from '@vueuse/core';
     import { Config } from '@/modules/Core/configs/config';
     import { SocketCheckName } from '@/modules/Core/interfaces/socket.interface';
@@ -63,8 +63,7 @@
     const isValidUsername = ref<boolean>(false);
     const errorUsername = ref<string | null>(null);
 
-    onBeforeMount(() => {
-        console.log(username.value);
+    onMounted(() => {
         if (!username.value) return;
         setTimeout(() => {
             checkName();

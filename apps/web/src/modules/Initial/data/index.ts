@@ -2,7 +2,7 @@ import { ref, Ref } from 'vue';
 import { useLocalStorage } from '@vueuse/core';
 import { nanoid } from 'nanoid';
 
-export const username: Ref<string> = useLocalStorage<string>('username', '');
+export const username: Ref<string> = useLocalStorage<string>('username', localStorage.getItem('username') as string);
 export const appId = ref<string>();
 export const scope = ref<string>();
 export const state = ref<string>();

@@ -5,7 +5,10 @@ import { appId, appPublicKey, redirectUrl, scope, state, username } from '@/modu
 export const setLocalStorageData = (route: RouteLocationNormalizedLoaded) => {
     const queryParams: QueryOptions = route.query as QueryOptions;
 
-    username.value = queryParams.username;
+    if (queryParams.username) {
+        username.value = queryParams.username;
+    }
+
     appId.value = queryParams.appid;
     scope.value = queryParams.scope;
     state.value = queryParams.state;
