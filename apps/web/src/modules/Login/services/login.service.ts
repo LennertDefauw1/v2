@@ -1,7 +1,7 @@
 import { getPublicKeyOfUsername } from '@/modules/Login/services/external.service';
 import { encrypt } from '@/modules/Core/services/crypto.service';
 import { emitJoin, emitLeave, emitLogin } from '@/modules/Core/services/socket.service';
-import { SocketJoin, SocketLeave, SocketLogin } from '@/modules/Core/interfaces/socket.interface';
+import { ISocketJoin, ISocketLeave, ISocketLogin } from '@/modules/Core/interfaces/socket.interface';
 import { nanoid } from 'nanoid';
 import {
     appId,
@@ -17,7 +17,7 @@ import {
 export const loginUserWeb = async () => {
     const doubleName = username.value + '.3bot';
 
-    const roomToJoinUser: SocketJoin = { room: doubleName };
+    const roomToJoinUser: ISocketJoin = { room: doubleName };
     emitJoin(roomToJoinUser);
 
     const pk = await getPublicKeyOfUsername(doubleName);
@@ -38,19 +38,19 @@ export const loginUserWeb = async () => {
 
     const encryptedAttempt = encrypt(objectToEncrypt, pk);
 
-    const roomToLeaveUser: SocketLeave = { room: doubleName };
+    const roomToLeaveUser: ISocketLeave = { room: doubleName };
     emitLeave(roomToLeaveUser);
 
-    const roomToJoinRandom: SocketJoin = { room: randomRoom };
+    const roomToJoinRandom: ISocketJoin = { room: randomRoom };
     emitJoin(roomToJoinRandom);
 
-    const loginAttempt: SocketLogin = { doubleName: doubleName, encryptedLoginAttempt: encryptedAttempt };
+    const loginAttempt: ISocketLogin = { doubleName: doubleName, encryptedLoginAttempt: encryptedAttempt };
     emitLogin(loginAttempt);
 };
 
 export const loginUserMobile = async () => {
     const randomRoom = nanoid().toLowerCase();
-    const roomToJoin: SocketJoin = { room: randomRoom };
+    const roomToJoin: ISocketJoin = { room: randomRoom };
     emitJoin(roomToJoin);
 
     const uniLinkUrl = `threebot://login/?state=${state.value}&scope=${scope.value}&appId=${appId.value}&randomRoom=${randomRoom}&appPublicKey=${appPublicKey.value}&redirecturl=${redirectUrl.value}`;

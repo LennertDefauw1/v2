@@ -1,40 +1,40 @@
-export interface SocketLeave {
+export interface ISocketLeave {
     room: string;
 }
 
-export interface SocketJoin {
+export interface ISocketJoin {
     room: string;
 }
 
-export interface SocketLogin {
+export interface ISocketLogin {
     doubleName: string;
     encryptedLoginAttempt: string;
 }
 
-export interface SocketSign {
+export interface ISocketSign {
     doubleName: string;
     encryptedSignAttempt: string;
 }
 
-export interface SocketCheckName {
+export interface ISocketCheckName {
     doubleName: string;
 }
 
-export interface SocketLoginResult {
+export interface ISocketLoginResult {
     doubleName: string;
     signedAttempt: string;
 }
 
-export interface SocketSignedAttempt {
+export interface ISocketSignedAttempt {
     signedState: string;
-    data: SocketSignedData;
+    data: ISocketSignedData;
     doubleName: string;
     randomRoom: string;
     appId: string;
     selectedImageId: number;
 }
 
-export interface SocketSignedData {
+export interface ISocketSignedData {
     nonce: string;
     ciphertext: string;
 }

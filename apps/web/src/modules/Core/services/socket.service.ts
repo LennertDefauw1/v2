@@ -1,11 +1,11 @@
 import { inject, reactive } from 'vue';
 import {
-    SocketCheckName,
-    SocketJoin,
-    SocketLeave,
-    SocketLogin,
-    SocketLoginResult,
-    SocketSign,
+    ISocketCheckName,
+    ISocketJoin,
+    ISocketLeave,
+    ISocketLogin,
+    ISocketLoginResult,
+    ISocketSign,
 } from '@/modules/Core/interfaces/socket.interface';
 import { SocketEmitType, SocketListenType } from '@/modules/Core/types/socket.type';
 import { userKnown } from '@/modules/Initial/data';
@@ -41,34 +41,34 @@ export const initializeSockets = () => {
         socketCallbackCancel();
     });
 
-    state.socket.on(SocketListenType.LOGIN_CALLBACK, async (data: SocketLoginResult) => {
+    state.socket.on(SocketListenType.LOGIN_CALLBACK, async (data: ISocketLoginResult) => {
         console.log('[SOCKET:RECEIVE]: LOGIN_CALLBACK');
         await socketCallbackLogin(data);
     });
 };
 
-export const emitCheckName = (name: SocketCheckName) => {
+export const emitCheckName = (name: ISocketCheckName) => {
     console.log('[SOCKET:SEND]: CHECK NAME');
     state.socket.emit(SocketEmitType.CHECK_NAME, name);
 };
 
-export const emitJoin = (room: SocketJoin) => {
+export const emitJoin = (room: ISocketJoin) => {
     state.socket.connect();
     console.log('[SOCKET:SEND]: JOIN ROOM');
     state.socket.emit(SocketEmitType.JOIN, room);
 };
 
-export const emitLeave = (room: SocketLeave) => {
+export const emitLeave = (room: ISocketLeave) => {
     console.log('[SOCKET:SEND]: LEAVE ROOM');
     state.socket.emit(SocketEmitType.LEAVE, room);
 };
 
-export const emitLogin = (login: SocketLogin) => {
+export const emitLogin = (login: ISocketLogin) => {
     console.log('[SOCKET:SEND]: LOGIN');
     state.socket.emit(SocketEmitType.LOGIN, login);
 };
 
-export const emitSign = (sign: SocketSign) => {
+export const emitSign = (sign: ISocketSign) => {
     console.log('[SOCKET:SEND]: SIGN');
     state.socket.emit(SocketEmitType.SIGN, sign);
 };

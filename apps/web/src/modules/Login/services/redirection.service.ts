@@ -1,7 +1,7 @@
-import { SocketLoginResult } from '@/modules/Core/interfaces/socket.interface';
+import { ISocketLoginResult } from '@/modules/Core/interfaces/socket.interface';
 import { appId, redirectUrl } from '@/modules/Initial/data';
 
-export const redirectToOriginalLocation = (signedAttempt: SocketLoginResult) => {
+export const redirectToOriginalLocation = (signedAttempt: ISocketLoginResult) => {
     console.log('[REDIRECTING] - SIGNED ATTEMPT: ', signedAttempt);
 
     if (!signedAttempt) return;
