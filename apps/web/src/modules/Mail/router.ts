@@ -6,6 +6,9 @@ export const mailRoutes = [
         name: 'mail',
         path: '/verifyemail',
         component: Mail,
+        meta: {
+            requiredParameters: ['userId', 'verificationCode'],
+        },
     },
 ];
 

@@ -1,7 +1,5 @@
 // @TODO: improve typings overall projects
 import { RouteLocationNormalizedLoaded } from 'vue-router';
-import { setLocalStorageData } from '@/modules/Core/services/storage.service';
-import { appId, appPublicKey, redirectUrl, scope, state } from '@/modules/Initial/data';
 
 export type QueryOptions = {
     appid: string;
@@ -12,13 +10,14 @@ export type QueryOptions = {
     scope: any;
 };
 
-export const isValidLoginUrl = (route: RouteLocationNormalizedLoaded): boolean => {
-    setLocalStorageData(route);
+export const hasRequiredParameters = (route: RouteLocationNormalizedLoaded, requiredParams: any) => {
+    if (!requiredParams) return true;
 
-    return !(!scope.value || !state.value || !appId.value || !redirectUrl.value || !appPublicKey.value);
-};
+    const q = Object.keys(route.query);
 
-export const isValidVerificationUrl = (route: RouteLocationNormalizedLoaded): boolean => {
-    const q = route.query;
-    return !(!q.userId || !q.verificationCode);
+    const required = requiredParams.map((e: string) => e.toUpperCase()).sort();
+    const given = q.map((e: string) => e.toUpperCase()).sort();
+
+    console.log(required, given);
+    return required.every((e: string) => given.includes(e));
 };

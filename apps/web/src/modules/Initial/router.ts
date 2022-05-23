@@ -6,6 +6,9 @@ export const initialRoutes = [
         name: 'initial',
         path: '/',
         component: Initial,
+        meta: {
+            requiredParameters: ['appId', 'scope', 'state', 'publickey', 'redirectUrl'],
+        },
     },
 ];
 

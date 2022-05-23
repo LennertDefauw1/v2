@@ -6,6 +6,9 @@ export const phoneRoutes = [
         name: 'phone',
         path: '/verifysms',
         component: Phone,
+        meta: {
+            requiredParameters: ['verificationCode', 'userId'],
+        },
     },
 ];
 
