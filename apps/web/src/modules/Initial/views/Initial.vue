@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts" setup>
-    import MainLayout from '@/layouts/MainLayout.vue';
-    import { isMobile } from '@/utils/misc';
+    import MainLayout from '@/modules/Core/layouts/MainLayout.vue';
+    import { isMobile } from '@/modules/Core/utils/mobile.util';
     import MobileLogin from '@/modules/Initial/components/mobile/MobileLogin.vue';
     import WebLogin from '@/modules/Initial/components/web/WebLogin.vue';
 </script>

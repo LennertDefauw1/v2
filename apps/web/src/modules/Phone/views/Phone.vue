@@ -34,12 +34,12 @@
     import Spinner from '@/modules/Core/components/Spinner.vue';
     import VerifySuccess from '@/modules/Core/components/VerifySuccess.vue';
     import VerifyFailed from '@/modules/Core/components/VerifyFailed.vue';
-    import MainLayout from '@/layouts/MainLayout.vue';
+    import MainLayout from '@/modules/Core/layouts/MainLayout.vue';
 
     import { useRoute } from 'vue-router';
     import { onMounted, ref } from 'vue';
     import { validatePhone } from '@/modules/Phone/services/phone.service';
-    import { isMobile } from '@/utils/misc';
+    import { isMobile } from '@/modules/Core/utils/mobile.util';
 
     const route = useRoute();
 

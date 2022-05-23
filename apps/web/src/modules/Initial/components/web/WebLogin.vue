@@ -53,10 +53,10 @@
     import { SocketCheckName } from '@/modules/Core/interfaces/socket.interface';
     import { selectedImageId, userKnown, username } from '@/modules/Initial/data';
     import { emitCheckName } from '@/modules/Core/services/socket.service';
-    import { validateName } from '@/utils/name.validate';
     import { useRouter } from 'vue-router';
     import { generateRandomImageId } from '@/modules/Login/utils/generate.util';
     import { loginUserWeb } from '@/modules/Login/services/login.service';
+    import { validateName } from '@/modules/Initial/validators/name.validator';
 
     const router = useRouter();
 

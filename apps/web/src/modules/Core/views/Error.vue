@@ -16,5 +16,5 @@
 
 <style scoped></style>
 <script lang="ts" setup>
-    import MainLayout from '@/layouts/MainLayout.vue';
+    import MainLayout from '@/modules/Core/layouts/MainLayout.vue';
 </script>

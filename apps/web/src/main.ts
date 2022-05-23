@@ -3,7 +3,6 @@ import App from './App.vue';
 import './index.css';
 
 import '@/components/global';
-import { registerGlobalComponent } from './components/global';
 import { createVueRouter } from '@/router';
 import { registerModules } from '@/router/registerRouters';
 
@@ -16,6 +15,7 @@ import SignModule from '@/modules/Sign';
 import sodium from 'libsodium-wrappers';
 import socketIo from '@/plugins/SocketIo';
 import { Config } from '@/modules/Core/configs/config';
+import { registerGlobalComponent } from '@/components/global';
 
 const initApplication = async () => {
     await sodium.ready;

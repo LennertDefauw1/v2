@@ -32,14 +32,14 @@
 
 <style scoped></style>
 <script lang="ts" setup>
-    import MainLayout from '@/layouts/MainLayout.vue';
+    import MainLayout from '@/modules/Core/layouts/MainLayout.vue';
     import { validateEmail } from '@/modules/Mail/services/email.service';
     import { useRoute } from 'vue-router';
     import { onMounted, ref } from 'vue';
     import Spinner from '@/modules/Core/components/Spinner.vue';
     import VerifySuccess from '@/modules/Core/components/VerifySuccess.vue';
     import VerifyFailed from '@/modules/Core/components/VerifyFailed.vue';
-    import { isMobile } from '@/utils/misc';
+    import { isMobile } from '@/modules/Core/utils/mobile.util';
 
     const route = useRoute();
 

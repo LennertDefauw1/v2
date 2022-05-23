@@ -34,10 +34,8 @@
 </template>
 
 <script lang="ts" setup>
-    import { isMobile } from '@/utils/misc';
-
-    import EmojiPicker from '@/components/EmojiPicker.vue';
-    import MainLayout from '@/layouts/MainLayout.vue';
+    import EmojiPicker from '@/modules/Login/components/EmojiPicker.vue';
+    import MainLayout from '@/modules/Core/layouts/MainLayout.vue';
     import { onBeforeUnmount, ref } from 'vue';
     import ExpiredAttempt from '@/modules/Login/components/ExpiredAttempt.vue';
     import { loginUserWeb } from '@/modules/Login/services/login.service';
