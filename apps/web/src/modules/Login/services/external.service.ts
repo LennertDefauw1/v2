@@ -6,7 +6,7 @@ export const getPublicKeyOfUsername = async (username: string): Promise<Uint8Arr
     try {
         return decodeBase64((await axios.get(`${Config.API_BACKEND_URL}api/users/${username}`))?.data.publicKey);
     } catch (err) {
-        console.error('Username of external API not found');
+        console.error('Username of external API not found / Not valid');
         return Uint8Array.of(0);
     }
 };

@@ -5,6 +5,7 @@ import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+    app.enableCors();
     app.setGlobalPrefix('api');
 
     const prismaService: PrismaService = app.get(PrismaService);
@@ -13,4 +14,5 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     await app.listen(3001);
 }
+
 bootstrap();

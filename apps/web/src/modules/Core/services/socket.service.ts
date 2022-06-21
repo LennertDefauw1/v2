@@ -51,7 +51,6 @@ export const initializeSockets = () => {
 
 export const emitCheckName = (name: ISocketCheckName) => {
     console.log('[SOCKET:SEND]: CHECK NAME');
-    console.log(name);
     state.socket.emit(SocketTypes.CHECK_NAME, name);
 };
 

@@ -12,6 +12,11 @@ export enum SocketTypes {
     'LOGIN_CALLBACK' = 'LOGIN_CALLBACK',
 }
 
+export enum SocketEvents {
+    'SIGN' = 'SIGN',
+    'LOGIN' = 'LOGIN',
+}
+
 export interface ISocketLeave {
     room: string;
 }

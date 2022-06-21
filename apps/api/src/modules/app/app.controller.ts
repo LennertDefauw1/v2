@@ -5,8 +5,18 @@ import { AppService } from './app.service';
 export class AppController {
     constructor(private readonly appService: AppService) {}
 
-    @Get()
+    @Get('')
     getHello(): string {
         return this.appService.getHello();
+    }
+
+    @Get('maintenance')
+    isInMaintenance(): any {
+        return { maintenance: 0 };
+    }
+
+    @Get('minimumversion')
+    getMinimumVersion(): any {
+        return { android: 70, ios: 70 };
     }
 }

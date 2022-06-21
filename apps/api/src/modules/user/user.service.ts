@@ -14,18 +14,10 @@ export class UserService {
         return this._prisma.user.findMany();
     }
 
-    async getById(userId: string) {
-        return this._prisma.user.findUnique({
-            where: {
-                userId,
-            },
-        });
-    }
-
     async getByUsername(username: string) {
         return this._prisma.user.findUnique({
             where: {
-                username,
+                username: username,
             },
         });
     }

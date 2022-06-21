@@ -8,17 +8,17 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post('')
-    async addUser(@Body() userDto: CreateUserDto): Promise<UserModel> {
+    async add(@Body() userDto: CreateUserDto): Promise<UserModel> {
         return await this.userService.create(userDto);
     }
 
     @Get('')
-    async getAllUsers(): Promise<UserModel[]> {
+    async getAll(): Promise<UserModel[]> {
         return await this.userService.getAll();
     }
 
-    @Get(':uuid')
-    async getUserById(@Param('uuid', new ParseUUIDPipe()) uuid: string): Promise<UserModel> {
-        return await this.userService.getById(uuid);
+    @Get(':username')
+    async getByUsername(@Param('username') username: string): Promise<UserModel> {
+        return await this.userService.getByUsername(username);
     }
 }
