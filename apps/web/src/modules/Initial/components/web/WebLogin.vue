@@ -50,13 +50,13 @@
     import { onMounted, ref } from 'vue';
     import { useDebounceFn } from '@vueuse/core';
     import { Config } from '@/modules/Core/configs/config';
-    import { ISocketCheckName } from '@/modules/Core/interfaces/socket.interface';
     import { selectedImageId, userKnown, username } from '@/modules/Initial/data';
     import { emitCheckName } from '@/modules/Core/services/socket.service';
     import { useRouter } from 'vue-router';
     import { generateRandomImageId } from '@/modules/Login/utils/generate.util';
     import { loginUserWeb } from '@/modules/Login/services/login.service';
     import { validateName } from '@/modules/Initial/validators/name.validator';
+    import { ISocketCheckName } from 'custom-types/src';
 
     const router = useRouter();
 
@@ -75,7 +75,7 @@
     }, Config.DEBOUNCE_NAME_SOCKET);
 
     const checkName = () => {
-        const socketName: ISocketCheckName = { doubleName: username.value + '.3bot' };
+        const socketName: ISocketCheckName = { username: username.value + '.3bot' };
         emitCheckName(socketName);
     };
 

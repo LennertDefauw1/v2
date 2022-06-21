@@ -6,7 +6,7 @@ import { PrismaModule } from 'nestjs-prisma';
 import { UserModule } from '../user/user.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FlagsmithModule } from '../flagsmith/flagsmith.module';
-import { ChatGateway } from '../socket/chat.gateway';
+import { UserGateway } from '../user/user.gateway';
 
 @Module({
     imports: [
@@ -17,6 +17,6 @@ import { ChatGateway } from '../socket/chat.gateway';
         FlagsmithModule,
     ],
     controllers: [AppController],
-    providers: [AppService, ChatGateway],
+    providers: [AppService, UserGateway],
 })
 export class AppModule {}

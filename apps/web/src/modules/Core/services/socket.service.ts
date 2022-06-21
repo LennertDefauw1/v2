@@ -1,4 +1,8 @@
 import { inject, reactive } from 'vue';
+
+import { userKnown } from '@/modules/Initial/data';
+import { socketCallbackCancel, socketCallbackLogin } from '@/modules/Login/services/callback.service';
+
 import {
     ISocketCheckName,
     ISocketJoin,
@@ -6,13 +10,8 @@ import {
     ISocketLogin,
     ISocketLoginResult,
     ISocketSign,
-} from '@/modules/Core/interfaces/socket.interface';
-
-import { userKnown } from '@/modules/Initial/data';
-import { socketCallbackCancel, socketCallbackLogin } from '@/modules/Login/services/callback.service';
-
-// @ts-ignore
-import { SocketTypes } from 'custom-types';
+    SocketTypes,
+} from 'custom-types/src';
 
 const state = reactive<State>({
     socket: '',
@@ -52,6 +51,7 @@ export const initializeSockets = () => {
 
 export const emitCheckName = (name: ISocketCheckName) => {
     console.log('[SOCKET:SEND]: CHECK NAME');
+    console.log(name);
     state.socket.emit(SocketTypes.CHECK_NAME, name);
 };
 

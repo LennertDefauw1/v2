@@ -1,7 +1,6 @@
 import { getPublicKeyOfUsername } from '@/modules/Login/services/external.service';
 import { encrypt } from '@/modules/Core/services/crypto.service';
 import { emitJoin, emitLeave, emitLogin } from '@/modules/Core/services/socket.service';
-import { ISocketJoin, ISocketLeave, ISocketLogin } from '@/modules/Core/interfaces/socket.interface';
 import { nanoid } from 'nanoid';
 import {
     appId,
@@ -13,6 +12,7 @@ import {
     state,
     username,
 } from '@/modules/Initial/data';
+import { ISocketJoin, ISocketLeave, ISocketLogin } from 'custom-types/src';
 
 export const loginUserWeb = async () => {
     const doubleName = username.value + '.3bot';

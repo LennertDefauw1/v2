@@ -1,10 +1,10 @@
 import { getPublicKeyOfUsername } from '@/modules/Login/services/external.service';
 import { validateSignedAttempt } from '@/modules/Core/services/crypto.service';
-import { ISocketLoginResult, ISocketSignedAttempt } from '@/modules/Core/interfaces/socket.interface';
 import { selectedImageId } from '@/modules/Initial/data';
 import { redirectToOriginalLocation, redirectWithCancel } from '@/modules/Login/services/redirection.service';
 import { encodeBase64 } from 'tweetnacl-util';
 import { isMobile } from '@/modules/Core/utils/mobile.util';
+import { ISocketLoginResult, ISocketSignedAttempt } from 'custom-types/src';
 
 export const socketCallbackLogin = async (data: ISocketLoginResult) => {
     if (!data.doubleName || !data.signedAttempt) return;
