@@ -1,0 +1,6 @@
+export enum SocketTypes {
+    'SOCKET_JOIN' = 'SOCKET_JOIN',
+    'SOCKET_LEAVE' = 'SOCKET_LEAVE',
+    'SOCKET_CHECK_NAME' = 'SOCKET_CHECK_NAME',
+    'SOCKET_SIGN' = 'SOCKET_SIGN',
+}

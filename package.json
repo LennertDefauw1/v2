@@ -1,5 +1,5 @@
 {
-    "name": "fullstack-boilerplate",
+    "name": "authenticatorv2",
     "version": "0.0.0",
     "private": true,
     "workspaces": [
@@ -13,7 +13,6 @@
         "format": "prettier --write ."
     },
     "devDependencies": {
-        "@types/socket.io-client": "^3.0.0",
         "eslint": "^8.9.0",
         "husky": "^7.0.4",
         "prettier": "^2.5.1",
@@ -23,7 +22,5 @@
         "npm": ">=7.0.0",
         "node": ">=14.0.0"
     },
-    "packageManager": "yarn@1.22.5",
-    "dependencies": {
-    }
+    "packageManager": "yarn@1.22.5"
 }

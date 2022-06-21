@@ -18,6 +18,5 @@ export const hasRequiredParameters = (route: RouteLocationNormalizedLoaded, requ
     const required = requiredParams.map((e: string) => e.toUpperCase()).sort();
     const given = q.map((e: string) => e.toUpperCase()).sort();
 
-    console.log(required, given);
     return required.every((e: string) => given.includes(e));
 };

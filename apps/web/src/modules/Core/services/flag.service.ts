@@ -5,7 +5,7 @@ export const initFlags = async () => {
     const isDev: boolean = process.env.NODE_ENV === 'development';
     const override = 'VGR7Kmd6qWqnYaZxXU7Gyw';
 
-    const environmentID = (await axios.get('/api/env')).data.flagsmith;
+    const environmentID = override;
     console.log({ flagsmithEnv: environmentID });
 
     await flagsmith.init({
