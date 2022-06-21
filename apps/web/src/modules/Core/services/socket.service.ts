@@ -7,9 +7,12 @@ import {
     ISocketLoginResult,
     ISocketSign,
 } from '@/modules/Core/interfaces/socket.interface';
-import { SocketEmitType, SocketListenType } from '@/modules/Core/types/socket.type';
+
 import { userKnown } from '@/modules/Initial/data';
 import { socketCallbackCancel, socketCallbackLogin } from '@/modules/Login/services/callback.service';
+
+// @ts-ignore
+import { SocketTypes } from 'custom-types';
 
 const state = reactive<State>({
     socket: '',
@@ -18,30 +21,30 @@ const state = reactive<State>({
 export const initializeSockets = () => {
     state.socket = inject('socket');
 
-    state.socket.on(SocketListenType.CONNECT, () => {
+    state.socket.on(SocketTypes.CONNECT, () => {
         console.log('[SOCKET:RECEIVE]: CONNECTED');
     });
 
-    state.socket.on(SocketListenType.DISCONNECT, () => {
+    state.socket.on(SocketTypes.DISCONNECT, () => {
         console.log('[SOCKET:RECEIVE]: DISCONNECTED');
     });
 
-    state.socket.on(SocketListenType.NAME_KNOWN, () => {
+    state.socket.on(SocketTypes.NAME_KNOWN, () => {
         console.log('[SOCKET:RECEIVE]: NAME KNOWN');
         userKnown.value = true;
     });
 
-    state.socket.on(SocketListenType.NAME_UNKNOWN, () => {
+    state.socket.on(SocketTypes.NAME_UNKNOWN, () => {
         console.log('[SOCKET:RECEIVE]: NAME UNKNOWN');
         userKnown.value = false;
     });
 
-    state.socket.on(SocketListenType.LOGIN_CANCEL, () => {
+    state.socket.on(SocketTypes.LOGIN_CANCEL, () => {
         console.log('[SOCKET:RECEIVE]: LOGIN CANCEL');
         socketCallbackCancel();
     });
 
-    state.socket.on(SocketListenType.LOGIN_CALLBACK, async (data: ISocketLoginResult) => {
+    state.socket.on(SocketTypes.LOGIN_CALLBACK, async (data: ISocketLoginResult) => {
         console.log('[SOCKET:RECEIVE]: LOGIN_CALLBACK');
         await socketCallbackLogin(data);
     });
@@ -49,28 +52,28 @@ export const initializeSockets = () => {
 
 export const emitCheckName = (name: ISocketCheckName) => {
     console.log('[SOCKET:SEND]: CHECK NAME');
-    state.socket.emit(SocketEmitType.CHECK_NAME, name);
+    state.socket.emit(SocketTypes.CHECK_NAME, name);
 };
 
 export const emitJoin = (room: ISocketJoin) => {
     state.socket.connect();
     console.log('[SOCKET:SEND]: JOIN ROOM');
-    state.socket.emit(SocketEmitType.JOIN, room);
+    state.socket.emit(SocketTypes.JOIN, room);
 };
 
 export const emitLeave = (room: ISocketLeave) => {
     console.log('[SOCKET:SEND]: LEAVE ROOM');
-    state.socket.emit(SocketEmitType.LEAVE, room);
+    state.socket.emit(SocketTypes.LEAVE, room);
 };
 
 export const emitLogin = (login: ISocketLogin) => {
     console.log('[SOCKET:SEND]: LOGIN');
-    state.socket.emit(SocketEmitType.LOGIN, login);
+    state.socket.emit(SocketTypes.LOGIN, login);
 };
 
 export const emitSign = (sign: ISocketSign) => {
     console.log('[SOCKET:SEND]: SIGN');
-    state.socket.emit(SocketEmitType.SIGN, sign);
+    state.socket.emit(SocketTypes.SIGN, sign);
 };
 
 interface State {
