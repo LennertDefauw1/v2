@@ -1,9 +1,14 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-// @ts-ignore
+//@ts-ignore
 import { ISocketCheckName, ISocketJoin, ISocketLeave, ISocketLogin, SocketEvents, SocketTypes } from 'custom-types';
 import { UserService } from './user.service';
+
+export interface IQueueMessage {
+    event: string;
+    data: Object;
+}
 
 @WebSocketGateway({ cors: true })
 export class UserGateway {
@@ -28,7 +33,17 @@ export class UserGateway {
 
     @SubscribeMessage(SocketTypes.LOGIN)
     async handleLogin(@MessageBody() data: ISocketLogin) {
-        this._emitOrQueue([SocketEvents.LOGIN, data.encryptedLoginAttempt], data.doubleName);
+        if (!data.encryptedLoginAttempt) return;
+
+        data.type = SocketEvents.LOGIN;
+        data.created = new Date().getTime();
+
+        const m: IQueueMessage = {
+            event: SocketEvents.LOGIN,
+            data: data,
+        };
+
+        this._emitOrQueue(m, data.doubleName);
     }
 
     @SubscribeMessage(SocketTypes.JOIN)
@@ -39,10 +54,16 @@ export class UserGateway {
         const socketId = client.id;
 
         const room = data.room.toLowerCase();
+
+        console.log('User ', room, ' joined the room');
         client.join(room);
 
-        this._socketRoom[socketId] = room;
-        if (room in Object.keys(this._messageQueue)) {
+        // User joined + we are sure he can get notifications inside the app
+        if (data.app) {
+            this._socketRoom[socketId] = room;
+        }
+
+        if (Object.keys(this._messageQueue).includes(room) && Object.values(this._socketRoom).includes(room)) {
             this._sendQueuedMessages(room);
         }
     }
@@ -58,30 +79,30 @@ export class UserGateway {
             const room = this._socketRoom[socketId];
             this._socketRoom[socketId] = null;
 
+            console.log('User ', room, ' left the room');
             client.leave(room);
         }
     }
 
     private _sendQueuedMessages(room: string) {
-        for (let message in this._messageQueue[room]) {
-            this.server.to(room).emit(message[0], message[1]);
-        }
+        console.log('Firing queue for ', room);
+
+        this._messageQueue[room].forEach((m: IQueueMessage) => {
+            this.server.to(room).emit(m.event, m.data);
+        });
 
         this._messageQueue[room] = [];
     }
 
-    // Message: { "event" : "SIGN", "data": "sample"}
-    private _emitOrQueue(message: any, room: string) {
+    private _emitOrQueue(message: IQueueMessage, room: string) {
         if (Object.values(this._socketRoom).includes(room)) {
-            return this.server.to(room).emit(message[0], message[1]);
+            console.log('Sending message to ', room);
+            return this.server.to(room).emit(message.event, message.data);
         }
 
-        // Not connected
-        const q = this._messageQueue[room];
-
-        if (q && q.length != 0) {
-            q.push(message);
-        }
+        console.log('Putting message in queue');
+        let q = this._messageQueue[room] ? this._messageQueue[room] : [];
+        q.push(message);
 
         return (this._messageQueue[room] = q);
     }

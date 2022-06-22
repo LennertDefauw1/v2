@@ -1,9 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { FlagsmithService } from '../flagsmith/flagsmith.service';
 
 @Controller()
 export class AppController {
-    constructor(private readonly appService: AppService) {}
+    constructor(private readonly appService: AppService, private readonly flagService: FlagsmithService) {}
 
     @Get('')
     getHello(): string {
@@ -11,12 +12,13 @@ export class AppController {
     }
 
     @Get('maintenance')
-    isInMaintenance(): any {
-        return { maintenance: 0 };
+    async isInMaintenance() {
+        const maintenance = await this.flagService.isInMaintenance();
+        return { maintenance: maintenance };
     }
 
     @Get('minimumversion')
-    getMinimumVersion(): any {
-        return { android: 70, ios: 70 };
+    async getMinimumVersion() {
+        return await this.flagService.getMinimumVersions();
     }
 }

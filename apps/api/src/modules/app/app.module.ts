@@ -7,6 +7,7 @@ import { UserModule } from '../user/user.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FlagsmithModule } from '../flagsmith/flagsmith.module';
 import { UserGateway } from '../user/user.gateway';
+import { FlagsmithService } from '../flagsmith/flagsmith.service';
 
 @Module({
     imports: [
@@ -17,6 +18,6 @@ import { UserGateway } from '../user/user.gateway';
         FlagsmithModule,
     ],
     controllers: [AppController],
-    providers: [AppService, UserGateway],
+    providers: [AppService, UserGateway, FlagsmithService],
 })
 export class AppModule {}

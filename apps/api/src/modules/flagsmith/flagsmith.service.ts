@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import * as flagsmith from 'flagsmith-nodejs';
-import * as nodecache from 'node-cache';
 
 @Injectable()
 export class FlagsmithService {
@@ -8,21 +7,22 @@ export class FlagsmithService {
         flagsmith.init({
             environmentID: process.env.FLAGSMITH_API_KEY,
             api: process.env.FLAGSMITH_URL,
-            //@ts-ignore
-            cache: new nodecache({ stdTTL: 300 }),
         });
     }
 
-    hasFeature(header: string) {
-        return flagsmith.hasFeature(header);
+    hasFeature(name: string) {
+        return flagsmith.hasFeature(name);
     }
 
-    getFeature(header: string) {
-        return flagsmith.getValue(header);
+    getFeature(name: string) {
+        return flagsmith.getValue(name);
     }
 
-    async getFeatureObject<T>(header: string) {
-        const result = await this.getFeature(header);
-        return JSON.parse(result as string) as T;
+    async isInMaintenance(): Promise<boolean> {
+        return await this.hasFeature('maintenance');
+    }
+
+    async getMinimumVersions() {
+        return await this.getFeature('minimum-version');
     }
 }
