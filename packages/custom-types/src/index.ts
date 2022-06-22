@@ -23,11 +23,14 @@ export interface ISocketLeave {
 
 export interface ISocketJoin {
     room: string;
+    app?: boolean;
 }
 
 export interface ISocketLogin {
     doubleName: string;
     encryptedLoginAttempt: string;
+    created?: number;
+    type?: string;
 }
 
 export interface ISocketSign {
@@ -56,4 +59,9 @@ export interface ISocketSignedAttempt {
 export interface ISocketSignedData {
     nonce: string;
     ciphertext: string;
+}
+
+export enum MobilePlatforms {
+    'ANDROID' = 'ANDROID',
+    'IOS' = 'IOS',
 }

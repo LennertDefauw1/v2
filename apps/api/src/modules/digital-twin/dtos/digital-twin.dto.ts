@@ -1,15 +1,15 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateUserDto {
+export class CreateDigitalTwinDto {
     @IsString()
     @IsNotEmpty()
-    email: string;
+    derivedPublicKey: string;
 
     @IsString()
     @IsNotEmpty()
-    username: string;
+    appId: string;
 
     @IsString()
     @IsNotEmpty()
-    mainPublicKey: string;
+    yggdrasilIp: string;
 }
