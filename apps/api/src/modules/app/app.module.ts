@@ -8,6 +8,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { FlagsmithModule } from '../flagsmith/flagsmith.module';
 import { UserGateway } from '../user/user.gateway';
 import { FlagsmithService } from '../flagsmith/flagsmith.service';
+import { DigitalTwinModule } from '../digitaltwin/digitaltwin.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { FlagsmithService } from '../flagsmith/flagsmith.service';
         ScheduleModule.forRoot(),
         UserModule,
         FlagsmithModule,
+        DigitalTwinModule,
     ],
     controllers: [AppController],
     providers: [AppService, UserGateway, FlagsmithService],
