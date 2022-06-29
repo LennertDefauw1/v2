@@ -1,103 +1,125 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { Prisma } from '@prisma/client';
-import { DigitalTwinDto } from './interfaces/digitaltwin.interfaces';
-import { decodeBase64 } from '../../utils/base';
 import { UserService } from '../user/user.service';
+import { BadRequestException, NotFoundException } from '../../exceptions';
+import { verifySignature } from 'custom-crypto';
+import { decodeBase64 } from 'tweetnacl-util';
+import { CreateDigitalTwinDto, DigitalTwinDetailsDto, DigitalTwinDto } from './dtos/digitaltwin.dto';
+import { CreateTwinResponseEnum } from './enums/response.enum';
+import {
+    findAllTwinsByUsernameQuery,
+    findAllTwinsQuery,
+    findTwinByUsernameAndAppIdQuery,
+} from './queries/digitaltwin.queries';
 
 @Injectable()
-export class DigitaltwinService {
-    constructor(private _prisma: PrismaService, private userService: UserService) {}
+export class DigitalTwinService {
+    constructor(private _prisma: PrismaService, private readonly userService: UserService) {}
 
-    async create(username: string, payload: Prisma.DigitalTwinCreateInput) {
-        const user = this.userService.getByUsername(username);
+    async create(username: string, payload: string) {
+        const user = await this.userService.findByUsername(username);
 
         if (!user) {
-            throw new HttpException(
-                {
-                    status: HttpStatus.NOT_FOUND,
-                    error: 'Username' + username + " doesn't exist",
-                },
-                HttpStatus.NOT_FOUND
-            );
+            throw new NotFoundException(`Username ${username} doesn't exist`);
         }
 
-        return this._prisma.digitalTwin.create({ data: payload });
+        const signedData = await verifySignature(payload, decodeBase64(user.mainPublicKey));
+        if (!signedData) {
+            throw new BadRequestException('Signature mismatch');
+        }
+
+        const readableMessage = new TextDecoder().decode(signedData);
+        const messageData: CreateDigitalTwinDto = JSON.parse(readableMessage);
+
+        const existingTwins = await this.findByUsernameAndAppId(user.username, messageData.appId);
+        if (existingTwins) {
+            console.log(`Skip the creation part since the combination of appId and username already exists`);
+            return CreateTwinResponseEnum.ALREADY_CREATED;
+        }
+
+        const b = {
+            ...messageData,
+            userId: user.userId,
+        };
+
+        return this._prisma.digitalTwin.create({ data: b });
     }
 
-    async getAll(): Promise<DigitalTwinDto[]> {
-        console.log('asdf');
-        return await this._prisma.digitalTwin.findMany({
-            select: {
-                username: true,
-                yggdrasilIp: true,
-                appId: true,
-            },
-        });
+    async updateYggdrasilHandler(username: string, payload: string) {
+        const user = await this.userService.findByUsername(username);
+
+        if (!user) {
+            throw new NotFoundException(`Username ${username} doesn't exist`);
+        }
+
+        const signedData = await verifySignature(payload, decodeBase64(user.mainPublicKey));
+        if (!signedData) {
+            throw new BadRequestException('Signature mismatch');
+        }
     }
 
-    async getTwinsByUsername(username: string): Promise<DigitalTwinDto[]> {
-        const twins = await this._prisma.digitalTwin.findMany({
-            select: {
-                username: true,
-                yggdrasilIp: true,
-                appId: true,
-                derivedPublicKey: true,
+    async update(yggdrasilIp: string, twinId: string) {
+        return this._prisma.digitalTwin.update({
+            data: {
+                yggdrasilIp: yggdrasilIp,
             },
             where: {
-                username: username,
+                id: twinId,
             },
         });
-
-        if (!twins || twins.length == 0) {
-            throw new HttpException(
-                {
-                    status: HttpStatus.NOT_FOUND,
-                    error: 'No twins found for username ' + username,
-                },
-                HttpStatus.NOT_FOUND
-            );
-        }
-
-        return twins;
     }
 
-    async getDetails(username: string, appId: string): Promise<DigitalTwinDto> {
-        const decodedAppId = decodeBase64(appId).trim();
+    async findAll(): Promise<DigitalTwinDto[]> {
+        const t = await this._prisma.digitalTwin.findMany(findAllTwinsQuery);
 
-        if (!decodedAppId) {
-            throw new HttpException(
-                {
-                    status: HttpStatus.EXPECTATION_FAILED,
-                    error: 'AppId is empty or should be base64 encoded',
-                },
-                HttpStatus.EXPECTATION_FAILED
-            );
-        }
-
-        const details = await this._prisma.digitalTwin.findFirst({
-            select: {
-                username: true,
-                yggdrasilIp: true,
-                appId: true,
-                derivedPublicKey: true,
-            },
-            where: {
-                username: username,
-                appId: decodedAppId,
-            },
+        return t.map(twin => {
+            return {
+                yggdrasilIp: twin.yggdrasilIp,
+                appId: twin.appId,
+                username: twin.user.username,
+            };
         });
+    }
 
-        if (!details) {
-            throw new HttpException(
-                {
-                    status: HttpStatus.NOT_FOUND,
-                    error: 'Username or appId not found',
-                },
-                HttpStatus.NOT_FOUND
-            );
+    async findByUsername(username: string): Promise<DigitalTwinDetailsDto[]> {
+        const user = await this.userService.findByUsername(username);
+        if (!user) {
+            throw new NotFoundException(`Username ${username} doesn't exist`);
         }
 
-        return details;
+        const t = await this._prisma.digitalTwin.findMany(findAllTwinsByUsernameQuery(user.userId));
+
+        if (!t || t.length == 0) {
+            throw new NotFoundException('No twins found for username ' + username);
+        }
+
+        return t.map(twin => {
+            return {
+                yggdrasilIp: twin.yggdrasilIp,
+                appId: twin.appId,
+                username: twin.user.username,
+                derivedPublicKey: twin.derivedPublicKey,
+            };
+        });
+    }
+
+    async findByUsernameAndAppId(username: string, appId: string): Promise<DigitalTwinDetailsDto> {
+        const user = await this.userService.findByUsername(username);
+        if (!user) {
+            throw new NotFoundException(`Username ${username} doesn't exist`);
+        }
+
+        const t = await this._prisma.digitalTwin.findFirst(findTwinByUsernameAndAppIdQuery(user.userId, appId));
+        if (!t) {
+            return;
+        }
+
+        return {
+            id: t.id,
+            yggdrasilIp: t.yggdrasilIp,
+            appId: t.appId,
+            username: t.user.username,
+            derivedPublicKey: t.derivedPublicKey,
+        };
     }
 }

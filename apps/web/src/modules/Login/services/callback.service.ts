@@ -1,10 +1,10 @@
 import { getPublicKeyOfUsername } from '@/modules/Login/services/external.service';
-import { validateSignedAttempt } from '@/modules/Core/services/crypto.service';
 import { selectedImageId } from '@/modules/Initial/data';
 import { redirectToOriginalLocation, redirectWithCancel } from '@/modules/Login/services/redirection.service';
 import { encodeBase64 } from 'tweetnacl-util';
 import { isMobile } from '@/modules/Core/utils/mobile.util';
 import { ISocketLoginResult, ISocketSignedAttempt } from 'custom-types/src';
+import { verifySignature } from 'custom-crypto';
 
 export const socketCallbackLogin = async (data: ISocketLoginResult) => {
     if (!data.doubleName || !data.signedAttempt) return;
@@ -14,7 +14,7 @@ export const socketCallbackLogin = async (data: ISocketLoginResult) => {
 
     console.log('[CALLBACK]: PUBLIC KEY', encodeBase64(pk));
 
-    const valid = await validateSignedAttempt(data.signedAttempt, pk);
+    const valid = await verifySignature(data.signedAttempt, pk);
     if (!valid) {
         return;
     }

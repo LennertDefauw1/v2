@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { DigitaltwinService } from './digitaltwin.service';
-import { DigitaltwinController } from './digitaltwin.controller';
+import { DigitalTwinService } from './digitaltwin.service';
+import { DigitalTwinController } from './digitaltwin.controller';
 import { UserService } from '../user/user.service';
 
 @Module({
-    providers: [DigitaltwinService, UserService],
-    exports: [DigitaltwinService],
-    controllers: [DigitaltwinController],
+    providers: [DigitalTwinService, UserService],
+    exports: [DigitalTwinService],
+    controllers: [DigitalTwinController],
 })
 export class DigitalTwinModule {}

@@ -19,10 +19,10 @@ model User {
 }
 
 model DigitalTwin {
-  id               String @id @unique @default(uuid())
-  user             User?  @relation(fields: [username], references: [username])
-  username           String @unique
-  derivedPublicKey String @unique
+  id               String  @id @unique @default(uuid())
+  user             User?   @relation(fields: [userId], references: [userId])
+  userId           String
+  derivedPublicKey String  @unique
   appId            String
-  yggdrasilIp      String
+  yggdrasilIp      String? @default("")
 }

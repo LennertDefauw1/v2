@@ -1,15 +1,29 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+// export class CreateDigitalTwinDto {
+//     @IsNotEmpty()
+//     name: any;
+//
+//     @IsString()
+//     @IsNotEmpty()
+//     derivedPublicKey: string;
+//
+//     @IsString()
+//     @IsNotEmpty()
+//     appId: string;
+// }
 
-export class CreateDigitalTwinDto {
-    @IsString()
-    @IsNotEmpty()
+export interface CreateDigitalTwinDto {
     derivedPublicKey: string;
-
-    @IsString()
-    @IsNotEmpty()
     appId: string;
-
-    @IsString()
-    @IsNotEmpty()
     yggdrasilIp: string;
+}
+
+export interface DigitalTwinDto {
+    username: string;
+    yggdrasilIp: string;
+    appId: string;
+}
+
+export interface DigitalTwinDetailsDto extends DigitalTwinDto {
+    id?: string;
+    derivedPublicKey: string;
 }

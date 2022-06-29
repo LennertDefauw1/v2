@@ -10,11 +10,11 @@ export class UserService {
         return this._prisma.user.create({ data: payload });
     }
 
-    async getAll() {
+    async findAll() {
         return this._prisma.user.findMany();
     }
 
-    async getByUsername(username: string) {
+    async findByUsername(username: string) {
         return this._prisma.user.findUnique({
             where: {
                 username: username,

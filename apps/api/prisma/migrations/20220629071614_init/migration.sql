@@ -17,10 +17,9 @@ CREATE TABLE `DigitalTwin` (
     `userId` VARCHAR(191) NOT NULL,
     `derivedPublicKey` VARCHAR(191) NOT NULL,
     `appId` VARCHAR(191) NOT NULL,
-    `yggdrasilIp` VARCHAR(191) NOT NULL,
+    `yggdrasilIp` VARCHAR(191) NULL DEFAULT '',
 
     UNIQUE INDEX `DigitalTwin_id_key`(`id`),
-    UNIQUE INDEX `DigitalTwin_userId_key`(`userId`),
     UNIQUE INDEX `DigitalTwin_derivedPublicKey_key`(`derivedPublicKey`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
