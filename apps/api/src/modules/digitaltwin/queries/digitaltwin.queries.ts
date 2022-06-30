@@ -1,3 +1,5 @@
+import exp from 'constants';
+
 export const findAllTwinsQuery = {
     select: {
         yggdrasilIp: true,
@@ -48,6 +50,25 @@ export const findTwinByUsernameAndAppIdQuery = (userId: string, appId: string) =
             user: {
                 userId: userId,
             },
+        },
+    };
+};
+
+export const updateTwinYggdrasilIpQuery = (yggdrasilIp: string, twinId: string) => {
+    return {
+        data: {
+            yggdrasilIp: yggdrasilIp,
+        },
+        where: {
+            id: twinId,
+        },
+    };
+};
+
+export const deleteTwinByIdQuery = (twinId: string) => {
+    return {
+        where: {
+            id: twinId,
         },
     };
 };

@@ -12,7 +12,7 @@ import {
     username,
 } from '@/modules/Initial/data';
 import { ISocketJoin, ISocketLeave, ISocketLogin } from 'custom-types/src';
-import { encrypt } from 'crypto/src';
+import { encrypt } from 'custom-crypto/src';
 
 export const loginUserWeb = async () => {
     const doubleName = username.value + '.3bot';

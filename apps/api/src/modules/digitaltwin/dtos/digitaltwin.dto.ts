@@ -12,6 +12,7 @@
 // }
 
 export interface CreateDigitalTwinDto {
+    username?: string;
     derivedPublicKey: string;
     appId: string;
     yggdrasilIp: string;

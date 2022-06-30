@@ -79,6 +79,22 @@ export class UserGateway {
         }
     }
 
+    async emitCancelLoginAttempt(username: string) {
+        this.server.to(username).emit(SocketTypes.LOGIN_CANCEL, { scanned: true });
+    }
+
+    async emitCancelSignAttempt(username: string) {
+        this.server.to(username).emit(SocketTypes.SIGN_CANCEL, { scanned: true });
+    }
+
+    async emitEmailVerified(username: string) {
+        this.server.to(username).emit(SocketTypes.EMAIL_VERIFIED, { scanned: true });
+    }
+
+    async emitSmsVerified(username: string) {
+        this.server.to(username).emit(SocketTypes.EMAIL_VERIFIED, { scanned: true });
+    }
+
     private _sendQueuedMessages(room: string) {
         console.log('Firing queue for ', room);
 

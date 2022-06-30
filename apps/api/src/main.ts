@@ -4,7 +4,8 @@ import { PrismaService } from 'nestjs-prisma';
 import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, { bodyParser: false });
+
     app.enableCors();
     app.setGlobalPrefix('api');
 

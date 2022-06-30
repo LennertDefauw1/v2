@@ -1,15 +1,36 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/user.dto';
 import { User as UserModel } from '@prisma/client';
+import { UserGateway } from './user.gateway';
 
 @Controller('users')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService, private readonly userGateway: UserGateway) {}
 
     @Post('')
     async create(@Body() userDto: CreateUserDto): Promise<UserModel> {
         return await this.userService.create(userDto);
+    }
+
+    @Post(':username/cancel')
+    async cancel(@Param('username') username: string) {
+        return this.userGateway.emitCancelLoginAttempt(username);
+    }
+
+    @Post(':username/cancelSign')
+    async cancelSign(@Param('username') username: string) {
+        return this.userGateway.emitCancelSignAttempt(username);
+    }
+
+    @Post(':username/emailverified')
+    async emailVerified(@Param('username') username: string) {
+        return this.userGateway.emitEmailVerified(username);
+    }
+
+    @Post(':username/smsverified')
+    async smsVerified(@Param('username') username: string) {
+        return this.userGateway.emitSmsVerified(username);
     }
 
     @Get('')

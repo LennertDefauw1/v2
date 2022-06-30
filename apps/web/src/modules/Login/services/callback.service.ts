@@ -4,7 +4,7 @@ import { redirectToOriginalLocation, redirectWithCancel } from '@/modules/Login/
 import { encodeBase64 } from 'tweetnacl-util';
 import { isMobile } from '@/modules/Core/utils/mobile.util';
 import { ISocketLoginResult, ISocketSignedAttempt } from 'custom-types/src';
-import { verifySignature } from 'custom-crypto';
+import { verifySignature } from 'custom-crypto/src';
 
 export const socketCallbackLogin = async (data: ISocketLoginResult) => {
     if (!data.doubleName || !data.signedAttempt) return;

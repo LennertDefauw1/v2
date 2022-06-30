@@ -10,6 +10,10 @@ export enum SocketTypes {
     'NAME_UNKNOWN' = 'NAME_UNKNOWN',
     'LOGIN_CANCEL' = 'LOGIN_CANCEL',
     'LOGIN_CALLBACK' = 'LOGIN_CALLBACK',
+    'SIGN_CANCEL' = 'SIGN_CANCEL',
+    'SIGN_CALLBACK' = 'SIGN_CALLBACK',
+    'EMAIL_VERIFIED' = 'EMAIL_VERIFIED',
+    'PHONE_VERIFIED' = 'PHONE_VERIFIED',
 }
 
 export enum SocketEvents {

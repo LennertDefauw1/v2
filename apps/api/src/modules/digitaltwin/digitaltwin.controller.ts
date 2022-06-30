@@ -6,15 +6,14 @@ import { DigitalTwinDto } from './dtos/digitaltwin.dto';
 @Controller('digitaltwin')
 export class DigitalTwinController {
     constructor(private readonly digitalTwinService: DigitalTwinService) {}
-
     @Post(':username')
     async create(@Param('username') username: string, @Body() data: any) {
-        await this.digitalTwinService.create(username, data['data']);
+        return await this.digitalTwinService.create(username, data.toString());
     }
 
     @Put(':username')
-    async update(@Param('username') username: string, @Body() data: any) {
-        await this.digitalTwinService.update(username, data['data']);
+    async update(@Param('username') username: string, @Body() data: string) {
+        return await this.digitalTwinService.updateYggdrasilHandler(username, data);
     }
 
     @Get('')

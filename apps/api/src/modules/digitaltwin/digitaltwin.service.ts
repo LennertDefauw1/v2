@@ -1,16 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { UserService } from '../user/user.service';
-import { BadRequestException, NotFoundException } from '../../exceptions';
+import {
+    BadRequestException,
+    ConflictException,
+    ExpectationFailedException,
+    NotFoundException,
+} from '../../exceptions';
 import { verifySignature } from 'custom-crypto';
 import { decodeBase64 } from 'tweetnacl-util';
 import { CreateDigitalTwinDto, DigitalTwinDetailsDto, DigitalTwinDto } from './dtos/digitaltwin.dto';
 import { CreateTwinResponseEnum } from './enums/response.enum';
 import {
+    deleteTwinByIdQuery,
     findAllTwinsByUsernameQuery,
     findAllTwinsQuery,
     findTwinByUsernameAndAppIdQuery,
+    updateTwinYggdrasilIpQuery,
 } from './queries/digitaltwin.queries';
+import sodium from 'libsodium-wrappers';
 
 @Injectable()
 export class DigitalTwinService {
@@ -18,7 +26,6 @@ export class DigitalTwinService {
 
     async create(username: string, payload: string) {
         const user = await this.userService.findByUsername(username);
-
         if (!user) {
             throw new NotFoundException(`Username ${username} doesn't exist`);
         }
@@ -31,42 +38,57 @@ export class DigitalTwinService {
         const readableMessage = new TextDecoder().decode(signedData);
         const messageData: CreateDigitalTwinDto = JSON.parse(readableMessage);
 
+        if (username != messageData.username) {
+            throw new ConflictException('Username mismatch');
+        }
+
         const existingTwins = await this.findByUsernameAndAppId(user.username, messageData.appId);
         if (existingTwins) {
             console.log(`Skip the creation part since the combination of appId and username already exists`);
             return CreateTwinResponseEnum.ALREADY_CREATED;
         }
 
-        const b = {
-            ...messageData,
+        const twin = {
+            derivedPublicKey: messageData.derivedPublicKey,
+            appId: messageData.appId,
             userId: user.userId,
         };
 
-        return this._prisma.digitalTwin.create({ data: b });
+        return this._prisma.digitalTwin.create({ data: twin });
     }
 
     async updateYggdrasilHandler(username: string, payload: string) {
-        const user = await this.userService.findByUsername(username);
+        const data = JSON.parse(payload);
 
-        if (!user) {
-            throw new NotFoundException(`Username ${username} doesn't exist`);
+        const signedIp = data.signedYggdrasilIpAddress;
+        const appId = data.appId;
+
+        if (!signedIp) {
+            throw new ExpectationFailedException('Signed IP is needed');
         }
 
-        const signedData = await verifySignature(payload, decodeBase64(user.mainPublicKey));
-        if (!signedData) {
-            throw new BadRequestException('Signature mismatch');
+        if (!appId) {
+            throw new ExpectationFailedException('AppId is required');
         }
+
+        const twin = await this.findByUsernameAndAppId(username, appId);
+        if (!twin) {
+            throw new NotFoundException('Twin does not exist');
+        }
+
+        const verifiedMessage = sodium.crypto_sign_open(decodeBase64(signedIp), decodeBase64(twin.derivedPublicKey));
+
+        const verifiedIp = new TextDecoder().decode(verifiedMessage);
+
+        return await this.update(verifiedIp, twin.id);
     }
 
     async update(yggdrasilIp: string, twinId: string) {
-        return this._prisma.digitalTwin.update({
-            data: {
-                yggdrasilIp: yggdrasilIp,
-            },
-            where: {
-                id: twinId,
-            },
-        });
+        return this._prisma.digitalTwin.update(updateTwinYggdrasilIpQuery(yggdrasilIp, twinId));
+    }
+
+    async delete(twinId: string) {
+        return this._prisma.digitalTwin.delete(deleteTwinByIdQuery(twinId));
     }
 
     async findAll(): Promise<DigitalTwinDto[]> {
