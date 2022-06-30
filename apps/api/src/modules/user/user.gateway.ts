@@ -1,9 +1,10 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-//@ts-ignore
+// @ts-ignore
 import { ISocketCheckName, ISocketJoin, ISocketLeave, ISocketLogin, SocketEvents, SocketTypes } from 'custom-types';
 import { UserService } from './user.service';
+import { SignedLoginAttemptDto, SignedSignAttemptDto } from '../app/app.service';
 
 export interface IQueueMessage {
     event: string;
@@ -88,11 +89,19 @@ export class UserGateway {
     }
 
     async emitEmailVerified(username: string) {
-        this.server.to(username).emit(SocketTypes.EMAIL_VERIFIED, { scanned: true });
+        this.server.to(username).emit(SocketTypes.EMAIL_VERIFIED, '');
     }
 
     async emitSmsVerified(username: string) {
-        this.server.to(username).emit(SocketTypes.EMAIL_VERIFIED, { scanned: true });
+        this.server.to(username).emit(SocketTypes.EMAIL_VERIFIED, '');
+    }
+
+    async emitSignedLoginAttempt(room: string, data: SignedLoginAttemptDto) {
+        this.server.to(room).emit(SocketEvents.LOGIN_ATTEMPT, data);
+    }
+
+    async emitSignedSignAttempt(room: string, data: SignedSignAttemptDto) {
+        this.server.to(room).emit(SocketEvents.SIGN_ATTEMPT, data);
     }
 
     private _sendQueuedMessages(room: string) {

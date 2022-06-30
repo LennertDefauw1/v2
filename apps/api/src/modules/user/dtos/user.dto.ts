@@ -13,3 +13,13 @@ export class CreateUserDto {
     @IsNotEmpty()
     mainPublicKey: string;
 }
+
+export interface ChangeEmailDto {
+    username: string;
+    email: string;
+}
+
+export interface AuthorizationHeaders {
+    timestamp: string;
+    intention: string;
+}

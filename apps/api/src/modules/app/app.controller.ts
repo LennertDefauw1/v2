@@ -1,26 +1,32 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FlagsmithService } from '../flagsmith/flagsmith.service';
 import sodium from 'libsodium-wrappers';
+
+export interface CreateUserDto {
+    doubleName: string;
+    email: string;
+    publicKey: string;
+}
 
 @Controller()
 export class AppController {
     constructor(private readonly appService: AppService, private readonly flagService: FlagsmithService) {}
 
-    @Get('')
-    async getHello(): Promise<string> {
-        const bip39 = require('bip39');
-        const sodium = require('libsodium-wrappers');
+    @Post('signedAttempt')
+    async signedLoginAttemptHandler(@Body() data: string) {
+        return this.appService.handleSignedLoginAttempt(data);
+    }
 
-        const mnemonic = bip39.generateMnemonic(256);
-        const entropy = bip39.mnemonicToEntropy(mnemonic);
+    @Post('signedSignDataAttempt')
+    async signedSignAttemptHandler(@Body() data: string) {
+        return this.appService.handleSignedSignAttempt(data);
+    }
 
-        await sodium.ready;
-
-        const t = sodium.crypto_sign_keypair(entropy);
-        console.log(t);
-
-        return this.appService.getHello();
+    @HttpCode(200)
+    @Post('mobileregistration')
+    async create(@Body() createUserData: string) {
+        return this.appService.create(createUserData);
     }
 
     @Get('maintenance')

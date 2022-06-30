@@ -19,6 +19,8 @@ export enum SocketTypes {
 export enum SocketEvents {
     'SIGN' = 'SIGN',
     'LOGIN' = 'LOGIN',
+    'LOGIN_ATTEMPT' = 'LOGIN_ATTEMPT',
+    'SIGN_ATTEMPT' = 'SIGN_ATTEMPT',
 }
 
 export interface ISocketLeave {

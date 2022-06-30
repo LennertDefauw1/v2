@@ -146,34 +146,34 @@ describe('Signing test', () => {
         expect(ip).toBe(verifiedIp);
     });
 
-    // it('Should create a twin, update the yggdrasil IP and delete the twin afterwards', async () => {
-    //     const username = 'local.3bot';
-    //     const appId = 'jest-' + randomStringGenerator();
-    //     const derivedPublicKey = 'jest-' + randomStringGenerator();
-    //
-    //     const dataObject = {
-    //         appId: appId,
-    //         derivedPublicKey: derivedPublicKey,
-    //         username: username,
-    //     };
-    //
-    //     const kp = createSigningKeyPair(mnemonic);
-    //
-    //     const signedMessage = encodeBase64(sodium.crypto_sign(JSON.stringify(dataObject), kp.privateKey));
-    //
-    //     const createdTwin = await digitalTwinController.create(username, signedMessage);
-    //
-    //     expect(createdTwin).not.toBeNull();
-    //
-    //     const newIp = '666:666:666:666';
-    //
-    //     const updateData = {
-    //         appId: appId,
-    //         signedYggdrasilIpAddress: signMessage(mnemonic, newIp),
-    //     };
-    //
-    //     const updatedTwin = await digitalTwinController.update(username, JSON.stringify(updateData));
-    //
-    //     console.log(updatedTwin);
-    // });
+    it('Should create a twin, update the yggdrasil IP and delete the twin afterwards', async () => {
+        const username = 'local.3bot';
+        const appId = 'jest-' + randomStringGenerator();
+        const derivedPublicKey = 'jest-' + randomStringGenerator();
+
+        const dataObject = {
+            appId: appId,
+            derivedPublicKey: derivedPublicKey,
+            username: username,
+        };
+
+        const kp = createSigningKeyPair(mnemonic);
+
+        const signedMessage = encodeBase64(sodium.crypto_sign(JSON.stringify(dataObject), kp.privateKey));
+
+        const createdTwin = await digitalTwinController.create(username, signedMessage);
+
+        expect(createdTwin).not.toBeNull();
+
+        const newIp = '666:666:666:666';
+
+        const updateData = {
+            appId: appId,
+            signedYggdrasilIpAddress: signMessage(mnemonic, newIp),
+        };
+
+        const updatedTwin = await digitalTwinController.update(username, JSON.stringify(updateData));
+
+        console.log(updatedTwin);
+    });
 });

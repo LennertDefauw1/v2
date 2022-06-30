@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/user.dto';
 import { User as UserModel } from '@prisma/client';
@@ -31,6 +31,12 @@ export class UserController {
     @Post(':username/smsverified')
     async smsVerified(@Param('username') username: string) {
         return this.userGateway.emitSmsVerified(username);
+    }
+
+    @HttpCode(200)
+    @Post('change-email')
+    async changeEmail(@Body() data: string, @Headers() headers) {
+        return this.userService.changeEmail(data, headers);
     }
 
     @Get('')
